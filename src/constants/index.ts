@@ -4,17 +4,9 @@ export const footerLinks = [
       label: "Home",
     },
     {
-      route: "/explore",
-      label: "Explore",
-    },
-    {
-      route: "/saved",
-      label: "Saved",
-    },
-    {
-      route: "/create-post",
-      label: "Create",
-    },
+      route: "/about",
+      label: "About",
+    }
   ];
 
 export const sidebarLinks = [

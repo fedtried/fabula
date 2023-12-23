@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import './globals.css';
 import RegisterForm from './_auth/forms/RegisterForm';
 import SignInForm from './_auth/forms/SignInForm';
-import { Home, Writing, UpdateProfile } from './_root/pages';
+import { Home, Writing, UpdateProfile, About } from './_root/pages';
 import AuthLayout from './_auth/AuthLayout';
 import RootLayout from './_root/RootLayout';
 import { Toaster } from './components/ui/toaster';
@@ -21,6 +21,7 @@ const App = () => {
             {/* private routes */}
             <Route element={<RootLayout />}>
                 <Route index element={<Home />}/>
+                <Route path='/about' element={<About />}/>
                 <Route path='/nook/:id' element={<NookLayout />}>
                   <Route path='/nook/:id/writing' element={<Writing />}/>
                   <Route path='/nook/:id/update-profile' element={<UpdateProfile />}/>
