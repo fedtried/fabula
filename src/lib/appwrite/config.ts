@@ -6,7 +6,8 @@ export const appwriteConfig = {
     databaseId: import.meta.env.VITE_APPWRITE_DATABASE_ID,
     storageId: import.meta.env.VITE_APPWRITE_STORAGE_ID,
     userCollectionId: import.meta.env.VITE_APPWRITE_USERS_COLLECTION_ID,
-    postCollectionId: import.meta.env.VITE_APPWRITE_POSTS_COLLECTION_ID
+    postCollectionId: import.meta.env.VITE_APPWRITE_POSTS_COLLECTION_ID,
+    promptCollectionId: import.meta.env.VITE_APPWRITE_PROMPTS_COLLECTION_ID
 }
 
 export const client = new Client();

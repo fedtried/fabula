@@ -14,7 +14,7 @@ export type IUser = {
     username: string;
     email: string;
     imageUrl: string;
-  };
+};
 
 export type INewUser = {
     username: string;
@@ -32,4 +32,10 @@ export type INewStory = {
   quote: string;
   writing: string;
   userId: string;
+}
+
+export type IUpdateUser = {
+  $id?: unknown;
+  userId: string;
+  username: string;
 }

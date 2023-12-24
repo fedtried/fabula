@@ -1,4 +1,4 @@
-import {INewStory, INewUser} from '@/types';
+import {INewStory, INewUser, IUpdateUser} from '@/types';
 import { account, appwriteConfig, avatars, databases } from './config';
 import { ID, Query } from 'appwrite';
 
@@ -160,7 +160,6 @@ export async function getStoryById(storyId?: string, userId?: string) {
     }
 }
 
-// ============================== GET USER'S POST
 export async function getUserStories(userId?: string) {
     if (!userId) return;
 
@@ -177,4 +176,98 @@ export async function getUserStories(userId?: string) {
     } catch (error) {
       console.log(error);
     }
-  }
+}
+
+export async function updateProfile(user: IUpdateUser) {
+    if(!user) return;
+
+    try {
+        const currentUserDetails = await getCurrentUser()
+        if(!currentUserDetails) throw Error
+
+        if(currentUserDetails.username !== user.username){
+            const newUsername = account.updateName(user.username)
+            if(!newUsername) throw Error
+        }
+
+
+        const updatedUser = await databases.updateDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.userCollectionId,
+            user.userId,
+            {
+               username: user.username
+            }
+        )
+        // if(currentUserDetails.email !== user.email){
+        //     const newUsername = account.updateEmail(user.email, user.password)
+        //     if(!newUsername) throw Error
+        // }
+        return updatedUser
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export async function getUserById(userId: string) {
+    try {
+      const user = await databases.getDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.userCollectionId,
+        userId
+      );
+
+      if (!user) throw Error;
+
+      return user;
+    } catch (error) {
+      console.log(error);
+    }
+}
+
+export async function deleteFromUserDatabase(userId: string){
+    try {
+        const deletedUser = databases.deleteDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.userCollectionId,
+            userId
+        )
+        return deletedUser
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export async function deleteUser(userId: string){
+    try {
+        const identity = await account.get();
+        const deletedUser = await account.deleteIdentity(identity.$id)
+
+        if(!deletedUser) throw Error
+
+        const user = await getUserById(userId)
+
+        const deleteFromDB = await deleteFromUserDatabase(user!.$id)
+
+        if(!deleteFromDB) throw Error
+
+        return deletedUser
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export async function getPrompt(date:string){
+    try {
+        const prompt = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.promptCollectionId,
+            [Query.equal("date", date)]
+          );
+
+        if (!prompt) throw Error;
+        return prompt.documents[0].prompt;
+    } catch (error) {
+        console.log(error)
+    }
+}
